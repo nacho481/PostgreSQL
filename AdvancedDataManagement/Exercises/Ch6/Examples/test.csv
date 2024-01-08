@@ -1,0 +1,6 @@
+customer_id,title,first_name,last_name,suffix,email,gender,ip_address,phone,street_address,city,state,postal_code,latitude,longitude,date_added
+1,,Arlena,Riveles,,ariveles0@stumbleupon.com,F,98.36.172.246,,,,,,,,2017-04-23 00:00:00
+2,Dr,Ode,Stovin,,ostovin1@npr.org,M,16.97.59.186,314-534-4361,2573 Fordem Parkway,Saint Louis,MO,63116,38.5814,-90.2625,2014-10-02 00:00:00
+3,,Braden,Jordan,,bjordan2@geocities.com,M,192.86.248.59,,5651 Kennedy Park,Pensacola,FL,32590,30.6143,-87.2758,2018-10-27 00:00:00
+4,,Jessika,Nussen,,jnussen3@salon.com,F,159.165.138.166,615-824-2506,224 Village Circle,Nashville,TN,37215,36.0986,-86.8219,2017-09-03 00:00:00
+5,,Lonnie,Rembaud,,lrembaud4@discovery.com,F,18.131.58.65,786-499-3431,38 Lindbergh Way,Miami,FL,33124,25.5584,-80.4582,2014-03-06 00:00:00
