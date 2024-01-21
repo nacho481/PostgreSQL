@@ -214,4 +214,10 @@ SELECT COUNT(*) FROM detailed_sales_report;
 DELETE FROM detailed_sales_report WHERE state = 'TX'; -- now it's 35,457
 CALL refresh_sales_tables();
 
+-- Verify sum in detailed_sales_report 
+SELECT SUM(sales_amount)::numeric(20,2)::money
+FROM detailed_sales_report;
+-- Verify if it matches with your discount report 
+SELECT SUM(sales_total)::numeric(20,2)::money
+FROM discount_report;
 
