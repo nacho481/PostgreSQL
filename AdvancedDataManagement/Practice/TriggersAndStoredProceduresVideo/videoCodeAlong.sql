@@ -107,3 +107,8 @@ UPDATE large_sales SET channel = 'VIP' WHERE customer_id > 20000;
 
 	-- you should see 4 records with 1 channnel saying VIP 
 SELECT * FROM large_sales_by_channel;
+
+-- How to drop a trigger 
+-- remember, triggers are bounded to a table which is why we use the ON clause followed
+-- by a table name 
+-- DROP TRIGGER IF EXISTS large_sales_update ON large_sales;
