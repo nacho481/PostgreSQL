@@ -1,5 +1,3 @@
-SELECT * FROM sales LIMIT 20; 
-
 CREATE TABLE IF NOT EXISTS large_sales (
 	channel VARCHAR(30),
 	customer_id bigint,
@@ -90,3 +88,5 @@ SELECT COUNT(*) FROM large_sales WHERE customer_id > 20000;
 SELECT * FROM large_sales_by_channel;
 
 UPDATE large_sales SET channel = 'VIP' WHERE customer_id > 20000;
+
+SELECT * FROM large_sales_by_channel;
