@@ -166,3 +166,11 @@ BEGIN
 RETURN; 
 END;
 $$;
+
+-- should show as it does not exist AT FIRST
+SELECT * FROM detailed_sales_report; 
+SELECT * FROM discount_report; 
+
+-- Run this, then the SELECT statements again, there should be some data. 
+CALL create_sales_tables();
+
