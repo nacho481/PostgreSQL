@@ -113,3 +113,11 @@ SELECT * FROM large_sales_by_channel;
 -- by a table name 
 -- DROP TRIGGER IF EXISTS large_sales_update ON large_sales;
 -- DROP TRIGGER IF EXISTS new_large_sale ON large_sales;
+
+
+SELECT s.dealership_id, d.street_address, d.city, d.state, d.postal_code,
+s.product_id, p.model, p.year, p.product_type, p.base_msrp, 
+s.customer_id, s.sales_amount, s.channel
+FROM sales s 
+LEFT JOIN dealerships d ON s.dealership_id = d.dealership_id
+LEFT JOIN products p ON s.product_id = p.product_id; 
