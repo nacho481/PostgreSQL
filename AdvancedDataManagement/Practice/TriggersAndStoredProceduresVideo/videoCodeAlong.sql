@@ -112,3 +112,4 @@ SELECT * FROM large_sales_by_channel;
 -- remember, triggers are bounded to a table which is why we use the ON clause followed
 -- by a table name 
 -- DROP TRIGGER IF EXISTS large_sales_update ON large_sales;
+-- DROP TRIGGER IF EXISTS new_large_sale ON large_sales;
