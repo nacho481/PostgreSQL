@@ -174,3 +174,5 @@ SELECT * FROM discount_report;
 -- Run this, then the SELECT statements again, there should be some data. 
 CALL create_sales_tables();
 
+-- ========== CREATE 2nd PROCEDURE ==========
+-- Detailed table will get data -> then update the summary table 
