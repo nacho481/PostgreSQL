@@ -176,3 +176,21 @@ CALL create_sales_tables();
 
 -- ========== CREATE 2nd PROCEDURE ==========
 -- Detailed table will get data -> then update the summary table 
+CREATE OR REPLACE PROCEDURE refresh_sales_tables()
+LANGUAGE PLPGSQL
+AS $$
+BEGIN 
+	DELETE FROM detailed_sales_report;
+	DELETE FROM discount_report;
+	
+	-- REFRESH DATA - into detailed sales report 
+	INSERT INTO detailed_sales_report
+		SELECT s.dealership_id, d.street_address, d.city, d.state, d.postal_code,
+		s.product_id, p.model, p.year, p.product_type, p.base_msrp, 
+		s.customer_id, s.sales_amount, s.channel
+		FROM sales s 
+		LEFT JOIN dealerships d ON s.dealership_id = d.dealership_id
+		LEFT JOIN products p ON s.product_id = p.product_id; 
+RETURN;
+END;
+$$;
