@@ -121,3 +121,26 @@ s.customer_id, s.sales_amount, s.channel
 FROM sales s 
 LEFT JOIN dealerships d ON s.dealership_id = d.dealership_id
 LEFT JOIN products p ON s.product_id = p.product_id; 
+
+SELECT s.dealership_id, d.street_address, p.product_type,
+	SUM(p.base_msrp)::numeric(20,2)::money AS total_retail_value,
+	SUM(s.sales_amount)::numeric(20,2)::money AS sales_total,
+	((1 - (SUM(s.sales_amount) / SUM(p.base_msrp)))*100)::numeric(4, 1) 
+		AS discount_percentage
+FROM sales AS s
+LEFT JOIN dealerships AS d ON s.dealership_id = d.dealership_id
+LEFT JOIN products AS p ON s.product_id = p.product_id
+GROUP BY 1, 2, 3
+ORDER BY 1, SUM(s.sales_amount) DESC; 
+
+CREATE OR REPLACE PROCEDURE create_sales_tables()
+LANGUAGE PLPGSQL
+AS $$ 
+BEGIN 
+	DROP TABLE IF EXISTS detailed_sales_report;
+	DROP TABLE IF EXISTS discount_report;
+	
+	CREATE TABLE detailed_sales_report AS ()
+RETURN; 
+END;
+$$;
