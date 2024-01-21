@@ -3,13 +3,13 @@ CREATE TABLE IF NOT EXISTS genre_sales(
 	genre VARCHAR(50),
 	
 	
+	
 );
 
 
 -- Detailed table 
 SELECT
     film.title,
-    film.release_year AS release_date,
     category.name AS genre,
     COUNT(rental.rental_id) AS number_of_rentals,
     SUM(payment.amount) AS total_revenue
@@ -29,7 +29,6 @@ INNER JOIN category
 	ON category.category_id = film_category.category_id
 GROUP BY 
 	film.title, 
-	film.release_year, 
 	category.name
 ORDER BY total_revenue DESC;
 
