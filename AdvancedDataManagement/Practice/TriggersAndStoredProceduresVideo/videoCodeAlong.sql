@@ -208,3 +208,10 @@ RETURN;
 END;
 $$;
 
+-- Let's create a scenario where we need to refresh the data, let's delete some data! XD
+	-- First, let's see what we're working with, 37,711 
+SELECT COUNT(*) FROM detailed_sales_report;
+DELETE FROM detailed_sales_report WHERE state = 'TX'; -- now it's 35,457
+CALL refresh_sales_tables();
+
+
