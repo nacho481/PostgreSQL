@@ -23,6 +23,7 @@ GROUP BY genre
 ORDER BY total_revenue DESC
 LIMIT 20;
 
+-- Detailed table 
 SELECT
     film.title,
     film.release_year AS release_date,
@@ -48,4 +49,6 @@ GROUP BY
 	film.release_year, 
 	category.name
 ORDER BY total_revenue DESC;
+
+
 
