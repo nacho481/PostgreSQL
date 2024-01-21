@@ -1,11 +1,12 @@
 -- ==================== CREATE - Detailed Table ==================== 
 CREATE TABLE IF NOT EXISTS genre_sales(
+	title VARCHAR(50),
 	genre VARCHAR(50),
-	
-	
-	
+	rental_id BIGINT,
+	-- this creates a MONEY data type explicitly stating to only allow 2 to the left and 
+	-- 2 floating points
+	payment NUMERIC(2,2)::MONEY 
 );
-
 
 -- Detailed table 
 SELECT
