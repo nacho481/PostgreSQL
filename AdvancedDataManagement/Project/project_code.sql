@@ -8,6 +8,15 @@ CREATE TABLE IF NOT EXISTS genre_sales(
 	payment NUMERIC(2,2)::MONEY 
 );
 
+-- ==================== CREATE - Summary Table ==================== 
+CREATE TABLE IF NOT EXISTS genre_sales_summary(
+	genre VARCHAR(50),
+	number_of_rentals BIGINT,
+		-- 6 points of precision, 2 floating points, convert to $$
+	total_revenue NUMERIC(6,2)::MONEY
+);
+
+
 -- Detailed table 
 SELECT
     film.title,
@@ -40,7 +49,7 @@ ORDER BY total_revenue DESC;
 SELECT 
 	category.name AS genre,  -- get genre 
 	COUNT(rental.rental_id) as number_of_rentals,
-	SUM(payment.amount) AS total_revenue  -- find total_revenue
+	(SUM(payment.amount))::NUMERIC(6,2)::MONEY AS total_revenue  -- find total_revenue
 FROM inventory 
 	-- link (inventory) to (rental) table
 INNER JOIN rental ON rental.inventory_id = inventory.inventory_id
