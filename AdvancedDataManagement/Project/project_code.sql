@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS genre_sales(
 	rental_id BIGINT,
 	-- this creates a MONEY data type explicitly stating to only allow 2 to the left and 
 	-- 2 floating points
-	payment NUMERIC(4,2)::MONEY 
+	payment NUMERIC(5,2)::MONEY 
 );
 
 -- ==================== INSERT INTO - Detailed Table ==================== 
@@ -28,7 +28,7 @@ SELECT
     film.title,
     category.name AS genre,
     COUNT(rental.rental_id) AS number_of_rentals,
-    (SUM(payment.amount))::NUMERIC(4,2)::MONEY AS total_revenue
+    (SUM(payment.amount))::NUMERIC(5,2)::MONEY AS total_revenue
 FROM inventory
 	-- link (inventory) to (rental) table
 LEFT JOIN rental ON rental.inventory_id = inventory.inventory_id
