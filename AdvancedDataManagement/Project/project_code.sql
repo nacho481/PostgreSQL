@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS genre_sales(
 	rental_id BIGINT,
 	-- this creates a MONEY data type explicitly stating to only allow 2 to the left and 
 	-- 2 floating points
-	payment NUMERIC(5,2)::MONEY 
+	payment NUMERIC(5,2)
 );
 
 -- ==================== INSERT INTO - Detailed Table ==================== 
@@ -46,9 +46,7 @@ LEFT JOIN category
 GROUP BY 
 	film.title, 
 	category.name
-ORDER BY total_revenue DESC;
-
-
+ORDER BY genre, total_revenue DESC;
 
 
 -- Summary table of genere and total-
