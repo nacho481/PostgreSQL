@@ -38,11 +38,13 @@ SELECT * FROM genre_sales;
 DELETE FROM genre_sales;
 DROP TABLE genre_sales;
 -- ==================== CREATE - Summary Table ==================== 
+DROP TABLE genre_sales_summary;
 CREATE TABLE IF NOT EXISTS genre_sales_summary(
 	genre VARCHAR(50),
 	number_of_rentals BIGINT,
 		-- 6 points of precision, 2 floating points, convert to $$
-	total_revenue MONEY
+	total_revenue MONEY,
+	UNIQUE(genre, number_of_rentals, total_revenue)
 );
 
 -- ==================== INSERT INTO - Summary Table ==================== 
@@ -69,33 +71,32 @@ BEGIN
 	-- clear data from this table 
 	DELETE FROM genre_sales_summary;
 	INSERT INTO genre_sales_summary
-		SELECT 
-			genre,
-			COUNT(number_of_rentals) AS number_of_rentals,
-			SUM(payment) AS total_revenue
+		SELECT genre, COUNT(number_of_rentals) AS number_of_rentals, SUM(payment) AS total_revenue
 		FROM genre_sales
 		GROUP BY 1
 		ORDER BY 3 DESC
 		LIMIT 5; 	
-	
+	RAISE NOTICE 'Trigger fired!';
 	RETURN NEW;
+	COMMIT;
 END;
 $$;
 
 -- ==================== CREATE TRIGGER ==================== 
-CREATE TRIGGER genre_sales_summary 
-	AFTER INSERT
+DROP TRIGGER genre_sales_summary_insert_trigger ON genre_sales;
+CREATE TRIGGER genre_sales_summary_insert_trigger
+	AFTER INSERT OR DELETE
 	ON genre_sales
 	FOR EACH STATEMENT
 	EXECUTE PROCEDURE insert_trigger_genre_sale();
-	
 -- Demo 
 	-- Show detailed summary 
 SELECT * FROM genre_sales_summary;
-
+SELECT * FROM genre_sales; 
+SELECT * FROM genre_sales WHERE title = 'Kickass';
 
 INSERT INTO genre_sales
-VALUES ('Kickass', 'Comedy', 24, 15 * 24);
+VALUES ('Kickass', 'Comedy', 24, 360);
 
 DELETE FROM genre_sales WHERE title = 'Kickass';
 
@@ -106,6 +107,7 @@ CREATE OR REPLACE PROCEDURE refresh_genre_tables()
 LANGUAGE PLPGSQL
 AS $$ 
 BEGIN 
+	ALTER TABLE genre_sales DISABLE TRIGGER genre_sales_summary_insert_trigger;
 	DELETE FROM genre_sales;
 	DELETE FROM genre_sales_summary;
 	
@@ -134,6 +136,8 @@ BEGIN
 			film.title, 
 			category.name
 		ORDER BY genre, total_revenue DESC;
+		ALTER TABLE genre_sales ENABLE TRIGGER genre_sales_summary_insert_trigger;
+
 RETURN;
 END;
 $$;
