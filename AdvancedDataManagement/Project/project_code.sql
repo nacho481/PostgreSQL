@@ -80,7 +80,23 @@ BEGIN
 	
 	RETURN NEW;
 END;
-$$
+$$;
+
+-- ==================== CREATE TRIGGER ==================== 
+CREATE TRIGGER genre_sales_summary 
+	AFTER INSERT
+	ON genre_sales
+	FOR EACH STATEMENT
+	EXECUTE PROCEDURE insert_trigger_genre_sale();
+
+-- ========== CREATE PROCEDURE ==========
+CREATE OR REPLACE PROCEDURE create_genres_tables()
+LANGUAGE PLPGSQL
+AS $$ 
+BEGIN 
+	DROP TABLE IF EXISTS genre_sales;
+	DROP TABLE IF EXISTS genre_sales_summary;
+
 
 
 -- Detailed table 
