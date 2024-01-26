@@ -1,10 +1,9 @@
 -- ==================== CREATE - Detailed Table ==================== 
+DROP TABLE genre_sales;
 CREATE TABLE IF NOT EXISTS genre_sales(
 	title VARCHAR(50),
 	genre VARCHAR(50),
 	number_of_rentals BIGINT,
-	-- this creates a MONEY data type explicitly stating to only allow 2 to the left and 
-	-- 2 floating points
 	payment MONEY
 );
 
@@ -42,9 +41,7 @@ DROP TABLE genre_sales_summary;
 CREATE TABLE IF NOT EXISTS genre_sales_summary(
 	genre VARCHAR(50),
 	number_of_rentals BIGINT,
-		-- 6 points of precision, 2 floating points, convert to $$
-	total_revenue MONEY,
-	UNIQUE(genre, number_of_rentals, total_revenue)
+	total_revenue MONEY
 );
 
 -- ==================== INSERT INTO - Summary Table ==================== 
@@ -67,16 +64,17 @@ RETURNS TRIGGER
 LANGUAGE PLPGSQL
 AS $$
 BEGIN
-	-- we want to update our large sales by channel table easiest way is to delete the table, and reinsert all + new data
-	-- clear data from this table 
+	-- we want to update our large sales by channel table, and the easiest way is to delete the table, and reinsert all + new data
+	-- Clear data from this table 
 	DELETE FROM genre_sales_summary;
 	INSERT INTO genre_sales_summary
-		SELECT genre, COUNT(number_of_rentals) AS number_of_rentals, SUM(payment) AS total_revenue
+		SELECT genre, 
+			COUNT(number_of_rentals) AS number_of_rentals, 
+			SUM(payment) AS total_revenue
 		FROM genre_sales
 		GROUP BY 1
 		ORDER BY 3 DESC
 		LIMIT 5; 	
-	RAISE NOTICE 'Trigger fired!';
 	RETURN NEW;
 	COMMIT;
 END;
@@ -107,6 +105,7 @@ CREATE OR REPLACE PROCEDURE refresh_genre_tables()
 LANGUAGE PLPGSQL
 AS $$ 
 BEGIN 
+	-- This helps prevent double-firing the trigger
 	ALTER TABLE genre_sales DISABLE TRIGGER genre_sales_summary_insert_trigger;
 	DELETE FROM genre_sales;
 	DELETE FROM genre_sales_summary;
@@ -187,6 +186,4 @@ FROM genre_sales
 GROUP BY 1
 ORDER BY 3 DESC
 LIMIT 5; 
-
-
 
